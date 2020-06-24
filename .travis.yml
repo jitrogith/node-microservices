@@ -6,7 +6,7 @@ services:
 before_install:
   - docker build -t rootdock/node-microservices -f ./client/Dockerfile.dev ./client
 
-scripts:
+script:
   - docker run -e CI=true rootdock/node-microservices npm run test
 
 after_success:
@@ -16,7 +16,7 @@ after_success:
   - docker build -t rootdock/multi-nginx ./nginx
   
   #login to docker-hub :
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   
   #push to docker-hub :
   - docker push rootdock/multi-client
