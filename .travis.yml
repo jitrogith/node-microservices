@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jitrogith/node-microservices -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -e CI=true jitrogith/node-microservices npm run test -- --coverage
+
+after_install:
+  - docker build -t jitrogith/multi-client ./client
+  - docker build -t jitrogith/multi-server ./server
+  - docker build -t jitrogith/multi-worker ./worker
+  - docker build -t jitrogith/multi-nginx ./nginx
+  #login to docker-hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"
+  #push to docker-hub
+  - docker push jitrogith/multi-client
+  - docker push jitrogith/multi-server
+  - docker push jitrogith/multi-worker
+  - docker push jitrogith/multi-nginx
