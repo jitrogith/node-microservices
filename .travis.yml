@@ -9,7 +9,7 @@ before_install:
 scripts:
   - docker run -e CI=true rootdock/node-microservices npm run test
 
-after_install:
+after_success:
   - docker build -t rootdock/multi-client ./client
   - docker build -t rootdock/multi-server ./server
   - docker build -t rootdock/multi-worker ./worker
