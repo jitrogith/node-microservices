@@ -7,7 +7,7 @@ before_install:
   - docker build -t rootdock/node-microservices -f ./client/Dockerfile.dev ./client
 
 scripts:
-  - docker run -e CI=true rootdock/node-microservices npm run test -- --coverage
+  - docker run -e CI=true rootdock/node-microservices npm run test
 
 after_install:
   - docker build -t rootdock/multi-client ./client
