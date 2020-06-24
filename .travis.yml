@@ -14,8 +14,10 @@ after_success:
   - docker build -t rootdock/multi-server ./server
   - docker build -t rootdock/multi-worker ./worker
   - docker build -t rootdock/multi-nginx ./nginx
-  #login to docker-hub
+  
+  #login to docker-hub :
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"
+  
   #push to docker-hub
   - docker push rootdock/multi-client
   - docker push rootdock/multi-server
