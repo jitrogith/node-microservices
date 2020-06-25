@@ -23,3 +23,16 @@ after_success:
   - docker push rootdock/multi-server
   - docker push rootdock/multi-worker
   - docker push rootdock/multi-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-southeast-1"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-1-537372604174"
+  bucket_path: "multi-docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  skip_cleanup: true
