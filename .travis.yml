@@ -24,6 +24,17 @@ after_success:
   - docker push rootdock/multi-worker
   - docker push rootdock/multi-nginx
 
+  - docker pull stephengrider/multi-client:latest
+  - docker pull stephengrider/multi-server:latest
+  - docker pull stephengrider/multi-worker:latest
+  - docker pull stephengrider/multi-nginx:latest
+
+  - docker push stephengrider/multi-client
+  - docker push stephengrider/multi-server
+  - docker push stephengrider/multi-worker
+  - docker push stephengrider/multi-nginx
+
+
 deploy:
   edge: true
   provider: elasticbeanstalk
