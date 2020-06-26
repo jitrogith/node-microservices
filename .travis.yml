@@ -35,7 +35,6 @@ after_success:
   - docker push rootdock/multi-worker
   - docker push rootdock/multi-nginx
 
-
 deploy:
   edge: true
   provider: elasticbeanstalk
