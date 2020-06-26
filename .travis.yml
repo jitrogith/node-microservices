@@ -19,20 +19,21 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   
   #push to docker-hub :
-  - docker push rootdock/multi-client
-  - docker push rootdock/multi-server
-  - docker push rootdock/multi-worker
-  - docker push rootdock/multi-nginx
 
   - docker pull stephengrider/multi-client:latest
   - docker pull stephengrider/multi-server:latest
   - docker pull stephengrider/multi-worker:latest
   - docker pull stephengrider/multi-nginx:latest
 
-  - docker push stephengrider/multi-client
-  - docker push stephengrider/multi-server
-  - docker push stephengrider/multi-worker
-  - docker push stephengrider/multi-nginx
+  - docker tag stephengrider/multi-client rootdock/multi-client
+  - docker tag stephengrider/multi-server rootdock/multi-server
+  - docker tag stephengrider/multi-worker rootdock/multi-worker
+  - docker tag stephengrider/multi-nginx rootdock/multi-nginx
+
+  - docker push rootdock/multi-client
+  - docker push rootdock/multi-server
+  - docker push rootdock/multi-worker
+  - docker push rootdock/multi-nginx
 
 
 deploy:
