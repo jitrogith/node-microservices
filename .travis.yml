@@ -4,47 +4,34 @@ services:
   - docker
 
 before_install:
-  - docker build -t rootdock/node-microservices -f ./client/Dockerfile.dev ./client
+  - docker build -t stephengrider/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true rootdock/node-microservices npm run test
+  - docker run -e CI=true stephengrider/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t rootdock/multi-client ./client
-  - docker build -t rootdock/multi-server ./server
-  - docker build -t rootdock/multi-worker ./worker
-  - docker build -t rootdock/multi-nginx ./nginx
-  
-  #login to docker-hub :
+  - docker build -t stephengrider/multi-client ./client
+  - docker build -t stephengrider/multi-nginx ./nginx
+  - docker build -t stephengrider/multi-server ./server
+  - docker build -t stephengrider/multi-worker ./worker
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  
-  #push to docker-hub :
-
-  - docker pull stephengrider/multi-client:latest
-  - docker pull stephengrider/multi-server:latest
-  - docker pull stephengrider/multi-worker:latest
-  - docker pull stephengrider/multi-nginx:latest
-
-  - docker tag stephengrider/multi-client rootdock/multi-client
-  - docker tag stephengrider/multi-server rootdock/multi-server
-  - docker tag stephengrider/multi-worker rootdock/multi-worker
-  - docker tag stephengrider/multi-nginx rootdock/multi-nginx
-
-  - docker push rootdock/multi-client
-  - docker push rootdock/multi-server
-  - docker push rootdock/multi-worker
-  - docker push rootdock/multi-nginx
+  # Take those images and push them to docker hub
+  - docker push stephengrider/multi-client
+  - docker push stephengrider/multi-nginx
+  - docker push stephengrider/multi-server
+  - docker push stephengrider/multi-worker
 
 deploy:
   edge: true
   provider: elasticbeanstalk
-  region: "us-west-2"
-  app: "multi-server"
-  env: "MultiServer-env"
-  bucket_name: "elasticbeanstalk-us-west-2-537372604174"
-  bucket_path: "multi-server"
+  region: us-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-west-1-306476627547
+  bucket_path: docker-multi
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  skip_cleanup: true
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
